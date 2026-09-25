@@ -203,7 +203,6 @@ function renderWeek(n) {
 // ---------------------------------------------------------------------------------------------
 // My team: one team's week — headline numbers, the counting lineup, then the bench
 // ---------------------------------------------------------------------------------------------
-const SLOT_ORDER = { starter: 0, bonus: 1, bench: 2 };
 
 /** NFL team code → { state: pre|in|post|bye|final, text } for this week. */
 function gameIndex(w) {
@@ -228,9 +227,9 @@ function gameFor(e, w, games) {
 
 function slotTag(e, final) {
   const b = e.bucket;
-  if (e.slot === 'bonus') return `<span class="slot-tag bonus">Bonus ${b}</span>`;
-  if (e.slot === 'starter') return `<span class="slot-tag ${e.sixthMan ? 'sixth' : 'starter'}">${b}${e.sixthMan ? ' 6th' : ''}</span>`;
-  return `<span class="slot-tag bench">${final ? 'Bench' : b}</span>`;
+  if (e.slot === 'bonus') return `<span class="slot-tag bonus">Bonus</span>`;
+  if (e.slot === 'starter') return `<span class="slot-tag ${e.sixthMan ? 'sixth' : 'starter'}">${e.sixthMan ? '6th man' : 'Counted'}</span>`;
+  return `<span class="slot-tag bench">Bench</span>`;
 }
 
 function playerRow(e, w, games, final) {
@@ -253,7 +252,7 @@ function renderTeam(team, n) {
   const final = w.status === 'final' || (w.status === 'live' && w.live?.allFinal);
   const games = gameIndex(w);
   const entries = DATA.buckets.flatMap(b => w.grid[team][b].map(id => w.entries[id]));
-  const counting = entries.filter(e => e.slot !== 'bench').sort((a, b) => SLOT_ORDER[a.slot] - SLOT_ORDER[b.slot] || DATA.buckets.indexOf(a.bucket) - DATA.buckets.indexOf(b.bucket) || b.pts - a.pts);
+  const counting = entries.filter(e => e.slot !== 'bench');
   const bench = entries.filter(e => e.slot === 'bench');
 
   const weekRank = [...DATA.teams].sort((a, b) => w.weekTotals[b] - w.weekTotals[a]).indexOf(team) + 1;
@@ -272,8 +271,14 @@ function renderTeam(team, n) {
   </section>`;
   if (w.status === 'live' && !final) h += `<p class="muted note">Live from ESPN. Your counting lineup is the best one <em>right now</em> and can change until every game ends. Official after Tuesday's nflverse settle.</p>`;
   if (w.status === 'unsettled') h += `<div class="warnbox">Week ${w.week} hasn't started scoring yet.</div>`;
-  h += `<section class="section"><h2>Counting · ${fmt(counting.reduce((a, e) => a + e.pts, 0))} pts</h2><div class="plist">${counting.map(e => playerRow(e, w, games, final)).join('')}</div></section>`;
-  h += `<section class="section"><h2>Bench · ${fmt(bench.reduce((a, e) => a + e.pts, 0))} pts not counted</h2><div class="plist">${bench.map(e => playerRow(e, w, games, final)).join('')}</div></section>`;
+  // Same order as the spreadsheet grid: QB, RB, WR, TE, K, D/ST, IDP — best score first within each.
+  h += `<p class="muted note">Counting ${fmt(counting.reduce((a, e) => a + e.pts, 0))} pts · bench ${fmt(bench.reduce((a, e) => a + e.pts, 0))} pts not counted</p>`;
+  for (const b of DATA.buckets) {
+    const group = w.grid[team][b].map(id => w.entries[id]);
+    if (!group.length) continue;
+    const n = group.filter(e => e.slot !== 'bench').length;
+    h += `<section class="section pgroup"><h2>${b === 'DST' ? 'D/ST' : b} <span class="muted">· ${n} counting</span></h2><div class="plist">${group.map(e => playerRow(e, w, games, final)).join('')}</div></section>`;
+  }
   return h;
 }
 

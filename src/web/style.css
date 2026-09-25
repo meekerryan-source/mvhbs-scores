@@ -195,3 +195,8 @@ nav { align-items: center; }
   .prow { grid-template-columns: 52px 1fr auto; gap: 8px; padding: 8px 10px; }
   .stat .v { font-size: 24px; }
 }
+
+.pgroup { margin: 12px 0; }
+.pgroup h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.pgroup h2 .muted { text-transform: none; letter-spacing: 0; font-weight: 500; }
+.prow:has(.slot-tag.bench) { background: var(--bg); }

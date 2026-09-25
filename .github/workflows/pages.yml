@@ -3,7 +3,8 @@
 # Official weeks (nflverse) are rebuilt here on a schedule; nflverse usually posts Tuesday morning
 # after MNF, so this runs Tue/Wed a few times. Live in-game scores need no server: each viewer's
 # browser scores the current week from ESPN (src/web/liveEngine.ts). Doublers and transactions
-# entered in the sheet are picked up live too, so no rebuild is needed for those.
+# entered in the sheet are picked up live too, so no rebuild is needed for those. A daily run
+# refreshes the official Injured Reserve list (red names on the site).
 #
 # Setup (once): Settings → Pages → Source: "GitHub Actions". Then Actions → "Build and deploy" →
 # Run workflow. Needs no secrets — the sheet and nflverse are read through public URLs.
@@ -19,6 +20,7 @@ on:
     - cron: '0 17 * * 2'   # Tue 13:00 ET
     - cron: '0 22 * * 2'   # Tue 18:00 ET
     - cron: '0 13 * * 3'   # Wed  9:00 ET (late stat corrections)
+    - cron: '0 10 * * *'   # daily 6:00 ET — refresh the Injured Reserve list (like the sheet's IR check)
 
 permissions:
   contents: read
@@ -33,8 +35,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -45,7 +47,7 @@ jobs:
       # the report is published on the site's Parity page and in the job log.
       - run: npm run parity -- --all || echo "::warning::Parity mismatches — see the Parity page"
       - run: npm run build:web
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
   deploy:
@@ -56,4 +58,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

@@ -3,7 +3,7 @@
 
 import { buildPointsLog, type WeekResult } from '../engine/season.js';
 import { BUCKET_ORDER, countedLabel, type LineupEntry } from '../engine/lineup.js';
-import { TEAM_ORDER } from '../engine/normalize.js';
+import { TEAM_ORDER, normName } from '../engine/normalize.js';
 import type { PlayerWeekStats } from '../engine/types.js';
 
 const STAT_FIELDS: (keyof PlayerWeekStats)[] = [
@@ -38,10 +38,14 @@ export function statLine(s: PlayerWeekStats | undefined): string {
   return parts.filter(Boolean).join(' · ');
 }
 
-export function entryJson(e: LineupEntry, id: string) {
+/** normName(roster player) → the NFL team of their most recent stat line (catches trades / stale roster teams). */
+export type LatestTeams = Record<string, string>;
+
+export function entryJson(e: LineupEntry, id: string, latest: LatestTeams = {}) {
   const s = e.score?.stats;
+  const nfl = e.bucket === 'DST' ? e.roster.nfl_team || e.match.statsTeam || '' : e.match.statsTeam || latest[normName(e.player)] || e.roster.nfl_team || '';
   return {
-    id, player: e.player, team: e.team, bucket: e.bucket, pos: e.roster.position, nfl: e.roster.nfl_team || e.match.statsTeam || '',
+    id, player: e.player, team: e.team, bucket: e.bucket, pos: e.roster.position, nfl,
     raw: e.raw, pts: e.pts, doubled: e.doubled, slot: e.slot, sixthMan: e.sixthMan, counted: countedLabel(e), active: e.active,
     acquired: e.roster.acquired_week ? { week: e.roster.acquired_week, via: e.roster.acquired_via, replaces: e.roster.replaces } : null,
     match: e.match,
@@ -56,7 +60,7 @@ export function entryJson(e: LineupEntry, id: string) {
 
 export type WeekJson = ReturnType<typeof weekJson>;
 
-export function weekJson(w: WeekResult) {
+export function weekJson(w: WeekResult, latest: LatestTeams = {}) {
   const grid: Record<string, Record<string, string[]>> = {};
   const entries: Record<string, ReturnType<typeof entryJson>> = {};
   for (const t of TEAM_ORDER) {
@@ -64,7 +68,7 @@ export function weekJson(w: WeekResult) {
     for (const b of BUCKET_ORDER) {
       grid[t][b] = w.lineups[t].buckets[b].map((e, i) => {
         const id = `${w.week}-${t}-${b}-${i}`;
-        entries[id] = entryJson(e, id);
+        entries[id] = entryJson(e, id, latest);
         return id;
       });
     }

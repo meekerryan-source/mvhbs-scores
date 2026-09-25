@@ -17,6 +17,7 @@ export interface LiveBase {
   roster: RosterEntry[];
   transactions: TransactionRow[];
   doublers: DoublerRow[];
+  latestTeam?: Record<string, string>;
 }
 
 /** Minimal RFC 4180 CSV → records (quoted fields, doubled quotes, embedded commas/newlines). */
@@ -116,5 +117,5 @@ export async function computeLive(base: LiveBase, week: number, previousTotals: 
     w.previousTotals[t] = previousTotals[t] ?? 0;
     w.newTotals[t] = Math.round(((previousTotals[t] ?? 0) + w.weekTotals[t]) * 100) / 100;
   }
-  return { week: weekJson(w), games, anyInProgress: games.some(g => g.state === 'in'), notes };
+  return { week: weekJson(w, base.latestTeam ?? {}), games, anyInProgress: games.some(g => g.state === 'in'), notes };
 }

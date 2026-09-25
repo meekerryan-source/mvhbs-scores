@@ -22,3 +22,23 @@ describe('browser CSV parser (sheet tabs)', () => {
     ]);
   });
 });
+
+import { parseIr } from '../src/data/injuries.js';
+describe('Injured Reserve list (ESPN injuries feed)', () => {
+  it('keeps only official Injured Reserve, with team code, date and note', () => {
+    const feed = { injuries: [
+      { displayName: 'New York Giants', injuries: [
+        { status: 'Injured Reserve', date: '2026-09-24T18:00Z', shortComment: 'Placed on IR (knee).', athlete: { displayName: 'Jaxson Dart', team: { abbreviation: 'NYG' }, position: { abbreviation: 'QB' } } },
+        { status: 'Questionable', athlete: { displayName: 'Malik Nabers', team: { abbreviation: 'NYG' } } },
+        { status: 'Out', athlete: { displayName: 'Someone Else', team: { abbreviation: 'NYG' } } },
+      ] },
+      { displayName: 'Los Angeles Rams', injuries: [
+        { status: 'Injured Reserve', date: '2026-09-24', athlete: { displayName: 'Ronnie Rivers', position: { abbreviation: 'RB' } } },
+      ] },
+    ] };
+    expect(parseIr(feed)).toEqual([
+      { name: 'Jaxson Dart', team: 'NYG', pos: 'QB', date: '2026-09-24', note: 'Placed on IR (knee).' },
+      { name: 'Ronnie Rivers', team: 'LA', pos: 'RB', date: '2026-09-24', note: '' },
+    ]);
+  });
+});

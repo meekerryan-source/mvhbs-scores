@@ -3,6 +3,7 @@
 import { fetchSheetTabs } from '../data/sheet.js';
 import { fetchNflverse } from '../data/nflverse.js';
 import { loadConfig } from '../data/load.js';
+import { fetchIr } from '../data/injuries.js';
 
 const args = process.argv.slice(2);
 const flag = (f: string) => args.includes(f);
@@ -13,5 +14,9 @@ if (!flag('--sheet-only')) {
   const season = Number(opt('--season')) || loadConfig().season;
   console.log(`nflverse ${season}:`);
   await fetchNflverse(season);
+}
+if (!flag('--sheet-only') || flag('--ir')) {
+  try { const ir = await fetchIr(); console.log(`ESPN Injured Reserve: ${ir.players.length} players league-wide`); }
+  catch (e) { console.warn(`ESPN injuries unavailable (${(e as Error).message}) — keeping the last IR list`); }
 }
 console.log('done.');

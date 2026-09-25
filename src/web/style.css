@@ -200,3 +200,15 @@ nav { align-items: center; }
 .pgroup h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
 .pgroup h2 .muted { text-transform: none; letter-spacing: 0; font-weight: 500; }
 .prow:has(.slot-tag.bench) { background: var(--bg); }
+
+/* Official NFL Injured Reserve */
+:root { --ir: #c62828; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --ir: #ff6b6b; } }
+:root[data-theme="dark"] { --ir: #ff6b6b; }
+td.name.on-ir, .on-ir .pname, .ir-text b { color: var(--ir); font-weight: 700; }
+td.doubled.name.on-ir { color: #b00020; }
+.ir-pill { display: inline-block; font-size: 10px; font-weight: 800; letter-spacing: .04em; color: #fff; background: var(--ir); border-radius: 3px; padding: 1px 4px; vertical-align: 2px; }
+.lg-ir { color: var(--ir) !important; font-weight: 700; border: 1px solid var(--ir); background: transparent !important; }
+
+/* Home Screen app on iPhone: keep the header clear of the status bar / notch */
+.top { padding-top: max(10px, env(safe-area-inset-top)); }

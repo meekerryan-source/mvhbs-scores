@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>MVHBS Scores</title>
-  <meta name="description" content="Most Valuable Has-Been Squad — 2026 official scoring (read-only)">
+  <meta name="description" content="Most Valuable Has-Been Squad 2026 — live scores during games, your team's lineup and every player's points. Official after Tuesday's settle.">
+  <meta name="theme-color" content="#263238">
+  <!-- Link preview (group texts, iMessage, Slack) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="MVHBS">
+  <meta property="og:title" content="MVHBS Scores — 2026">
+  <meta property="og:description" content="Live scores during games, your team's lineup and every player's points. Pick your team from the menu.">
+  <meta property="og:url" content="https://meekerryan-source.github.io/mvhbs-scores/">
+  <meta property="og:image" content="https://meekerryan-source.github.io/mvhbs-scores/icons/icon-512.png">
+  <meta name="twitter:card" content="summary">
+  <!-- Home Screen -->
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-title" content="MVHBS">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,8 +38,7 @@
       <a href="#team" data-page="team" hidden>My team</a>
       <a href="#week" data-page="week">League</a>
       <a href="#standings" data-page="standings">Standings</a>
-      <a href="#parity" data-page="parity">Parity</a>
-      <a href="#audit" data-page="audit">Audit</a>
+      <!-- Parity / Audit are the scorer's tools: reachable at #parity and #audit, not in the menu. -->
     </nav>
   </header>
   <main id="main" tabindex="-1"><p class="muted">Loading…</p></main>

@@ -14,13 +14,31 @@ const store = {
 };
 
 let DATA;
-const LIVE = { week: null, error: '', timer: 0, busy: false };
+let IR = new Map(); // normName|TEAM and normName| → IR record
+
+/** Same key as the engine's normName (strip one Jr/Sr/II/III/IV/V suffix and non-alphanumerics). */
+const normName = s => String(s ?? '').trim().replace(/[.,]/g, ' ').replace(/\s+\b(jr|sr|ii|iii|iv|v)\b\s*$/i, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+function indexIr() {
+  IR = new Map();
+  for (const p of DATA.ir?.players ?? []) {
+    const k = normName(p.name);
+    IR.set(`${k}|${p.team}`, p);
+    if (!IR.has(`${k}|`)) IR.set(`${k}|`, p);
+  }
+}
+/** Official Injured Reserve record for a rostered player (never D/ST), matched by name + NFL team, then name. */
+const irFor = e => (e.bucket === 'DST' ? null : IR.get(`${normName(e.player)}|${e.nfl}`) ?? IR.get(`${normName(e.player)}|`) ?? null);
+const irDate = d => (d ? new Date(d + 'T12:00:00Z').toLocaleDateString([], { month: 'short', day: 'numeric' }) : '');
+
+const LIVE = { week: null, error: '', timer: 0, busy: false, checked: false };
 const STATUS_LABEL = { final: 'Final', provisional: 'Provisional', live: 'Live', unsettled: 'Not settled' };
 
 async function load() {
   const res = await fetch('data.json', { cache: 'no-store' });
   DATA = await res.json();
   DATA.standings = computeStandings();
+  indexIr();
   $('#season').textContent = DATA.season;
   updateStamp();
 }
@@ -49,7 +67,7 @@ function rerender() {
 // otherwise. data.json is re-read every 30 min so Tuesday's official settle replaces the live week.
 // ---------------------------------------------------------------------------------------------
 async function liveTick() {
-  if (LIVE.busy) return;
+  if (LIVE.busy || document.hidden) return;
   LIVE.busy = true;
   let next = 10 * 60_000;
   try {
@@ -68,12 +86,19 @@ async function liveTick() {
     next = 2 * 60_000;
   } finally {
     LIVE.busy = false;
+    LIVE.checked = true;
     updateStamp();
     rerender();
     clearTimeout(LIVE.timer);
     LIVE.timer = setTimeout(liveTick, next);
   }
 }
+
+// Don't burn phone data while the screen is off or the tab is in the background; catch up on return.
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { clearTimeout(LIVE.timer); return; }
+  if (DATA) liveTick();
+});
 
 setInterval(async () => {
   const keep = DATA.weeks.find(w => w.status === 'live');
@@ -166,10 +191,11 @@ function renderWeek(n) {
   let h = `<div class="bar"><h1>Week ${w.week}</h1>${badge(w.status)}${weekPicker(w.week, 'week')}</div>`;
   h += `<div class="bar"><span class="muted">${esc(w.statusNote)}${w.live ? ` · ESPN fetched ${new Date(w.live.fetchedAt).toLocaleTimeString()}` : ''}</span></div>`;
   if (w.live) h += renderGames(w.live.games);
-  if (w.status === 'unsettled') h += `<div class="warnbox">nflverse has no official stats for Week ${w.week} yet, so nothing is scored. The sheet's live grid stays the reference until the Tuesday nflverse refresh.</div>`;
+  if (w.status === 'unsettled' && !LIVE.checked) h += `<p class="muted note">Loading live scores…</p>`;
+  else if (w.status === 'unsettled') h += `<div class="warnbox">nflverse has no official stats for Week ${w.week} yet, so nothing is scored. The sheet's live grid stays the reference until the Tuesday nflverse refresh.</div>`;
   const floors = w.audit.filter(a => a.type.startsWith('pbp_'));
   if (floors.length) h += `<div class="badbox"><b>${floors.length} TD${floors.length > 1 ? 's' : ''} floored to +2</b> — play-by-play distances missing. <a href="#audit">See Audit</a>.</div>`;
-  h += `<div class="bar legend">${final ? '<span class="lg-starter">Counted</span><span class="lg-bonus">Bonus slot</span><span class="lg-sixth">6th man</span>' : '<span class="muted">Lineup colours appear once the week is final.</span>'}<span class="lg-doubler">★ Doubler ×2</span><span class="muted">Click any player for the scoring audit.</span></div>`;
+  h += `<div class="bar legend">${final ? '<span class="lg-starter">Counted</span><span class="lg-bonus">Bonus slot</span><span class="lg-sixth">6th man</span>' : '<span class="muted">Lineup colours appear once the week is final.</span>'}<span class="lg-doubler">★ Doubler ×2</span>${IR.size ? '<span class="lg-ir">Injured Reserve</span>' : ''}<span class="muted">Click any player for the scoring audit.</span></div>`;
 
   h += `<div class="card scroll"><table class="grid"><thead><tr><th class="slot">Slot</th>`;
   for (const t of DATA.teams) {
@@ -185,9 +211,10 @@ function renderWeek(n) {
         const id = w.grid[t][b][k];
         const e = id && w.entries[id];
         if (!e) { h += `<td class="name"></td><td class="pts"></td>`; continue; }
-        const cls = [final && e.slot === 'starter' ? (e.sixthMan ? 'sixth' : 'starter') : '', final && e.slot === 'bonus' ? 'bonus' : '', !e.active ? 'inactive' : ''].filter(Boolean).join(' ');
-        const dcls = e.doubled ? 'doubled' : cls;
-        const title = `${e.player} · ${e.pos} ${e.nfl} · ${e.counted}${e.doubled ? ' · doubler' : ''}${e.active ? '' : ' · no stats this week'}`;
+        const ir = irFor(e);
+        const cls = [final && e.slot === 'starter' ? (e.sixthMan ? 'sixth' : 'starter') : '', final && e.slot === 'bonus' ? 'bonus' : '', !e.active ? 'inactive' : '', ir ? 'on-ir' : ''].filter(Boolean).join(' ');
+        const dcls = e.doubled ? `doubled${ir ? ' on-ir' : ''}` : cls;
+        const title = `${e.player} · ${e.pos} ${e.nfl} · ${e.counted}${e.doubled ? ' · doubler' : ''}${ir ? ' · INJURED RESERVE' : ''}${e.active ? '' : ' · no stats this week'}`;
         h += `<td class="cell name ${dcls}" data-id="${id}" title="${esc(title)}">${e.doubled ? '★ ' : ''}${esc(e.player)}</td>`;
         h += `<td class="cell pts ${dcls}" data-id="${id}">${e.doubled ? `<span class="x2">${fmt(e.raw)}×2=</span>${fmt(e.pts)}` : fmt(e.pts)}</td>`;
       }
@@ -235,10 +262,11 @@ function slotTag(e, final) {
 function playerRow(e, w, games, final) {
   const g = gameFor(e, w, games);
   const ptsText = e.doubled ? `<span class="x2">${fmt(e.raw)}×2</span>${fmt(e.pts)}` : fmt(e.pts);
-  const line = e.statLine || (g.state === 'pre' || g.state === 'bye' ? '' : e.active ? 'No scoring stats yet' : 'No stats');
-  return `<button type="button" class="prow cell ${e.doubled ? 'is-doubled' : ''} g-${g.state}" data-id="${e.id}">
+  const ir = irFor(e);
+  const line = e.statLine || (ir ? `On Injured Reserve since ${irDate(ir.date)}` : g.state === 'pre' || g.state === 'bye' ? '' : e.active ? 'No scoring stats yet' : 'No stats');
+  return `<button type="button" class="prow cell ${e.doubled ? 'is-doubled' : ''} ${ir ? 'on-ir' : ''} g-${g.state}" data-id="${e.id}">
     ${slotTag(e, final)}
-    <span class="pmain"><span class="pname">${e.doubled ? '★ ' : ''}${esc(e.player)}</span>
+    <span class="pmain"><span class="pname">${e.doubled ? '★ ' : ''}${esc(e.player)}${ir ? ' <span class="ir-pill" title="Official NFL Injured Reserve">IR</span>' : ''}</span>
       <span class="pmeta">${esc(e.pos)}${e.nfl ? ' · ' + esc(e.nfl) : ''}${g.text ? ` · <span class="gstate">${g.state === 'in' ? '● ' : ''}${esc(g.text)}</span>` : ''}</span>
       ${line ? `<span class="pline">${esc(line)}</span>` : ''}</span>
     <span class="ppts">${ptsText}</span>
@@ -270,7 +298,7 @@ function renderTeam(team, n) {
     ${w.status === 'live' ? `<div class="stat"><span class="k">Still to play</span><span class="v">${toPlay}</span><span class="s">${playing ? `${playing} playing now` : 'counting players'}</span></div>` : ''}
   </section>`;
   if (w.status === 'live' && !final) h += `<p class="muted note">Live from ESPN. Your counting lineup is the best one <em>right now</em> and can change until every game ends. Official after Tuesday's nflverse settle.</p>`;
-  if (w.status === 'unsettled') h += `<div class="warnbox">Week ${w.week} hasn't started scoring yet.</div>`;
+  if (w.status === 'unsettled') h += LIVE.checked ? `<div class="warnbox">Week ${w.week} hasn't started scoring yet.</div>` : `<p class="muted note">Loading live scores…</p>`;
   // Same order as the spreadsheet grid: QB, RB, WR, TE, K, D/ST, IDP — best score first within each.
   h += `<p class="muted note">Counting ${fmt(counting.reduce((a, e) => a + e.pts, 0))} pts · bench ${fmt(bench.reduce((a, e) => a + e.pts, 0))} pts not counted</p>`;
   for (const b of DATA.buckets) {
@@ -318,6 +346,7 @@ function openPlayer(id) {
     <dt>Score</dt><dd class="big">${e.doubled ? `${fmt(e.raw)} × 2 = ${fmt(e.pts)} <span class="pill">doubler</span>` : fmt(e.pts)}</dd>
     <dt>Matched</dt><dd>${esc(MATCH[e.match.how])}${e.match.statsName && e.match.statsName !== e.player ? ` → ${esc(e.match.statsName)}` : ''}${e.match.statsTeam ? ` (${esc(e.match.statsTeam)})` : ''}${e.statsPos ? ` · scored as ${esc(e.statsPos)}` : ''}</dd>
     ${e.game ? `<dt>Game</dt><dd>${e.game.pf != null ? `${esc(e.game.team)} ${e.game.pf}–${e.game.pa} vs ${esc(e.game.opp)}` : `${esc(e.game.team)} vs ${esc(e.game.opp)}`}</dd>` : ''}
+    ${irFor(e) ? `<dt>Status</dt><dd class="ir-text"><b>Injured Reserve</b>${irFor(e).date ? ` since ${irDate(irFor(e).date)}` : ''}${irFor(e).note ? ` — ${esc(irFor(e).note)}` : ''}<br><span class="muted">Eligible for an IR swap: same NFL team, same position.</span></dd>` : ''}
     ${e.acquired ? `<dt>Acquired</dt><dd>W${e.acquired.week} via ${esc(e.acquired.via)}${e.acquired.replaces ? ` (replaced ${esc(e.acquired.replaces)})` : ''}</dd>` : ''}
   </dl>`;
   if (e.lines.length) {

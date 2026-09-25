@@ -213,13 +213,14 @@ td.doubled.name.on-ir { color: #b00020; }
 /* Home Screen app on iPhone: keep the header clear of the status bar / notch */
 .top { padding-top: max(10px, env(safe-area-inset-top)); }
 
-/* League photo banner */
+/* League banner: a wide painting with open dark space on the left for the title */
 .banner {
-  position: relative; height: 150px; overflow: hidden;
-  background: #263238 url("icons/og.jpg") center 30% / cover no-repeat;
+  position: relative; overflow: hidden;
+  aspect-ratio: 2000 / 857; max-height: 360px; width: 100%;
+  background: #1a120b url("icons/banner.jpg") right 30% / cover no-repeat;
 }
-.banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,14,18,.78), rgba(10,14,18,0) 65%); }
-.banner-text { position: absolute; left: 16px; right: 16px; bottom: 10px; z-index: 1; display: grid; gap: 1px; color: #fff; max-width: 1500px; margin: 0 auto; }
-.banner-title { font-size: 20px; font-weight: 800; letter-spacing: .01em; text-shadow: 0 1px 3px rgba(0,0,0,.6); text-wrap: balance; }
-.banner-sub { font-size: 12px; opacity: .9; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
-@media (min-width: 720px) { .banner { height: 220px; background-position: center 12%; } .banner-title { font-size: 26px; } .banner-text { left: 24px; bottom: 14px; } }
+.banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,8,5,.55), rgba(10,8,5,0) 45%); }
+.banner-text { position: absolute; left: 16px; bottom: 12px; z-index: 1; display: grid; gap: 2px; color: #f3e6c8; max-width: 42%; }
+.banner-title { font-family: Georgia, "Times New Roman", serif; font-size: clamp(15px, 4.2vw, 34px); font-weight: 700; line-height: 1.1; text-shadow: 0 1px 3px rgba(0,0,0,.8); text-wrap: balance; }
+.banner-sub { font-size: clamp(11px, 2.4vw, 14px); opacity: .85; text-shadow: 0 1px 2px rgba(0,0,0,.8); }
+@media (min-width: 720px) { .banner-text { left: 24px; bottom: 20px; } }

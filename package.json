@@ -1,0 +1,28 @@
+{
+  "name": "mvhbs-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MVHBS fantasy scoring engine + read-only web app (parity port of the 2026 Live Scores sheet)",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "fetch": "tsx src/cli/fetch.ts",
+    "parity": "tsx src/cli/parity.ts",
+    "build:web": "tsx src/cli/buildWeb.ts",
+    "serve": "tsx src/cli/serve.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "csv-parse": "^5.6.0"
+  }
+}

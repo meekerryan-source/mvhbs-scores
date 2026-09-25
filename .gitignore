@@ -1,0 +1,13 @@
+node_modules/
+.cache/
+dist/
+dist-ts/
+.env
+.env.*
+*.key.json
+service-account*.json
+reports/
+
+# Local-only: the build spec (owner names/emails) and editor/session settings
+SPEC.md
+.claude/

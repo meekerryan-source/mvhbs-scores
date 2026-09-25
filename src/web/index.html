@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MVHBS Scores</title>
+  <meta name="description" content="Most Valuable Has-Been Squad — 2026 official scoring (read-only)">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="mark" aria-hidden="true">🏈</span>
+      <div>
+        <div class="title">MVHBS <span id="season"></span></div>
+        <div class="sub" id="generated"></div>
+      </div>
+    </div>
+    <nav id="nav" aria-label="Pages">
+      <label class="visually-hidden" for="team-pick">Choose your team</label>
+      <select id="team-pick"></select>
+      <a href="#team" data-page="team" hidden>My team</a>
+      <a href="#week" data-page="week">League</a>
+      <a href="#standings" data-page="standings">Standings</a>
+      <a href="#parity" data-page="parity">Parity</a>
+      <a href="#audit" data-page="audit">Audit</a>
+    </nav>
+  </header>
+  <main id="main" tabindex="-1"><p class="muted">Loading…</p></main>
+  <dialog id="drawer" aria-labelledby="drawer-title">
+    <div class="drawer-head">
+      <h2 id="drawer-title"></h2>
+      <button type="button" class="close" id="drawer-close" aria-label="Close">×</button>
+    </div>
+    <div id="drawer-body"></div>
+  </dialog>
+  <script src="app.js" type="module"></script>
+</body>
+</html>

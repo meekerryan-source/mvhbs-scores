@@ -1,0 +1,1086 @@
+{
+ "threshold": [
+  {
+   "rule_id": "YARD_RB_075",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "RB",
+   "scope": "game_total",
+   "min": 75,
+   "max": null,
+   "points": 4
+  },
+  {
+   "rule_id": "YARD_RB_100",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "RB",
+   "scope": "game_total",
+   "min": 100,
+   "max": null,
+   "points": 6
+  },
+  {
+   "rule_id": "YARD_RB_125",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "RB",
+   "scope": "game_total",
+   "min": 125,
+   "max": null,
+   "points": 8
+  },
+  {
+   "rule_id": "YARD_RB_150",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "RB",
+   "scope": "game_total",
+   "min": 150,
+   "max": null,
+   "points": 10
+  },
+  {
+   "rule_id": "YARD_RB_175",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "RB",
+   "scope": "game_total",
+   "min": 175,
+   "max": null,
+   "points": 12
+  },
+  {
+   "rule_id": "YARD_RB_200",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "RB",
+   "scope": "game_total",
+   "min": 200,
+   "max": null,
+   "points": 15
+  },
+  {
+   "rule_id": "YARD_RB_250",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "RB",
+   "scope": "game_total",
+   "min": 250,
+   "max": null,
+   "points": 20
+  },
+  {
+   "rule_id": "YARD_RB_300",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "RB",
+   "scope": "game_total",
+   "min": 300,
+   "max": null,
+   "points": 25
+  },
+  {
+   "rule_id": "YARD_WRTE_075",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "WR/TE",
+   "scope": "game_total",
+   "min": 75,
+   "max": null,
+   "points": 2
+  },
+  {
+   "rule_id": "YARD_WRTE_100",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "WR/TE",
+   "scope": "game_total",
+   "min": 100,
+   "max": null,
+   "points": 4
+  },
+  {
+   "rule_id": "YARD_WRTE_125",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "WR/TE",
+   "scope": "game_total",
+   "min": 125,
+   "max": null,
+   "points": 6
+  },
+  {
+   "rule_id": "YARD_WRTE_150",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "WR/TE",
+   "scope": "game_total",
+   "min": 150,
+   "max": null,
+   "points": 8
+  },
+  {
+   "rule_id": "YARD_WRTE_175",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "WR/TE",
+   "scope": "game_total",
+   "min": 175,
+   "max": null,
+   "points": 10
+  },
+  {
+   "rule_id": "YARD_WRTE_200",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "WR/TE",
+   "scope": "game_total",
+   "min": 200,
+   "max": null,
+   "points": 13
+  },
+  {
+   "rule_id": "YARD_WRTE_250",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "WR/TE",
+   "scope": "game_total",
+   "min": 250,
+   "max": null,
+   "points": 18
+  },
+  {
+   "rule_id": "YARD_WRTE_300",
+   "category": "yardage_bonus",
+   "stat": "total_scrimmage_yards",
+   "pos": "WR/TE",
+   "scope": "game_total",
+   "min": 300,
+   "max": null,
+   "points": 23
+  },
+  {
+   "rule_id": "YARD_QB_025",
+   "category": "yardage_bonus",
+   "stat": "qb_total_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 25,
+   "max": null,
+   "points": 1
+  },
+  {
+   "rule_id": "YARD_QB_050",
+   "category": "yardage_bonus",
+   "stat": "qb_total_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 50,
+   "max": null,
+   "points": 4
+  },
+  {
+   "rule_id": "YARD_QB_075",
+   "category": "yardage_bonus",
+   "stat": "qb_total_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 75,
+   "max": null,
+   "points": 6
+  },
+  {
+   "rule_id": "YARD_QB_100",
+   "category": "yardage_bonus",
+   "stat": "qb_total_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 100,
+   "max": null,
+   "points": 8
+  },
+  {
+   "rule_id": "YARD_QB_125",
+   "category": "yardage_bonus",
+   "stat": "qb_total_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 125,
+   "max": null,
+   "points": 11
+  },
+  {
+   "rule_id": "YARD_QB_150",
+   "category": "yardage_bonus",
+   "stat": "qb_total_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 150,
+   "max": null,
+   "points": 13
+  },
+  {
+   "rule_id": "YARD_QB_200",
+   "category": "yardage_bonus",
+   "stat": "qb_total_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 200,
+   "max": null,
+   "points": 18
+  },
+  {
+   "rule_id": "PASS_YDS_200",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 200,
+   "max": null,
+   "points": 2
+  },
+  {
+   "rule_id": "PASS_YDS_225",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 225,
+   "max": null,
+   "points": 3
+  },
+  {
+   "rule_id": "PASS_YDS_250",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 250,
+   "max": null,
+   "points": 4
+  },
+  {
+   "rule_id": "PASS_YDS_275",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 275,
+   "max": null,
+   "points": 6
+  },
+  {
+   "rule_id": "PASS_YDS_300",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 300,
+   "max": null,
+   "points": 8
+  },
+  {
+   "rule_id": "PASS_YDS_325",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 325,
+   "max": null,
+   "points": 10
+  },
+  {
+   "rule_id": "PASS_YDS_350",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 350,
+   "max": null,
+   "points": 12
+  },
+  {
+   "rule_id": "PASS_YDS_375",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 375,
+   "max": null,
+   "points": 14
+  },
+  {
+   "rule_id": "PASS_YDS_400",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 400,
+   "max": null,
+   "points": 16
+  },
+  {
+   "rule_id": "PASS_YDS_450",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 450,
+   "max": null,
+   "points": 20
+  },
+  {
+   "rule_id": "PASS_YDS_500",
+   "category": "passing_bonus",
+   "stat": "passing_yards",
+   "pos": "QB",
+   "scope": "game_total",
+   "min": 500,
+   "max": null,
+   "points": 25
+  },
+  {
+   "rule_id": "REC_RBTE_005",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 5,
+   "max": null,
+   "points": 1
+  },
+  {
+   "rule_id": "REC_RBTE_006",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 6,
+   "max": null,
+   "points": 2
+  },
+  {
+   "rule_id": "REC_RBTE_007",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 7,
+   "max": null,
+   "points": 4
+  },
+  {
+   "rule_id": "REC_RBTE_008",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 8,
+   "max": null,
+   "points": 5
+  },
+  {
+   "rule_id": "REC_RBTE_009",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 9,
+   "max": null,
+   "points": 7
+  },
+  {
+   "rule_id": "REC_RBTE_010",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 10,
+   "max": null,
+   "points": 9
+  },
+  {
+   "rule_id": "REC_RBTE_011",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 11,
+   "max": null,
+   "points": 10
+  },
+  {
+   "rule_id": "REC_RBTE_012",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 12,
+   "max": null,
+   "points": 11.5
+  },
+  {
+   "rule_id": "REC_RBTE_013",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 13,
+   "max": null,
+   "points": 13
+  },
+  {
+   "rule_id": "REC_RBTE_014",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 14,
+   "max": null,
+   "points": 14.5
+  },
+  {
+   "rule_id": "REC_RBTE_015",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "RB/TE",
+   "scope": "game_total",
+   "min": 15,
+   "max": null,
+   "points": 16
+  },
+  {
+   "rule_id": "REC_WR_005",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 5,
+   "max": null,
+   "points": 0
+  },
+  {
+   "rule_id": "REC_WR_006",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 6,
+   "max": null,
+   "points": 1
+  },
+  {
+   "rule_id": "REC_WR_007",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 7,
+   "max": null,
+   "points": 2
+  },
+  {
+   "rule_id": "REC_WR_008",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 8,
+   "max": null,
+   "points": 4
+  },
+  {
+   "rule_id": "REC_WR_009",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 9,
+   "max": null,
+   "points": 5
+  },
+  {
+   "rule_id": "REC_WR_010",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 10,
+   "max": null,
+   "points": 7
+  },
+  {
+   "rule_id": "REC_WR_011",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 11,
+   "max": null,
+   "points": 9
+  },
+  {
+   "rule_id": "REC_WR_012",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 12,
+   "max": null,
+   "points": 10
+  },
+  {
+   "rule_id": "REC_WR_013",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 13,
+   "max": null,
+   "points": 12
+  },
+  {
+   "rule_id": "REC_WR_014",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 14,
+   "max": null,
+   "points": 13
+  },
+  {
+   "rule_id": "REC_WR_015",
+   "category": "receptions_bonus",
+   "stat": "receptions",
+   "pos": "WR",
+   "scope": "game_total",
+   "min": 15,
+   "max": null,
+   "points": 15
+  },
+  {
+   "rule_id": "TD_RUSH_0_4",
+   "category": "td_distance_bonus",
+   "stat": "rushing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 0,
+   "max": 4,
+   "points": 2
+  },
+  {
+   "rule_id": "TD_RUSH_5_10",
+   "category": "td_distance_bonus",
+   "stat": "rushing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 5,
+   "max": 10,
+   "points": 4
+  },
+  {
+   "rule_id": "TD_RUSH_11_20",
+   "category": "td_distance_bonus",
+   "stat": "rushing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 11,
+   "max": 20,
+   "points": 6
+  },
+  {
+   "rule_id": "TD_RUSH_21_35",
+   "category": "td_distance_bonus",
+   "stat": "rushing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 21,
+   "max": 35,
+   "points": 9
+  },
+  {
+   "rule_id": "TD_RUSH_36_49",
+   "category": "td_distance_bonus",
+   "stat": "rushing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 36,
+   "max": 49,
+   "points": 12
+  },
+  {
+   "rule_id": "TD_RUSH_50_PLUS",
+   "category": "td_distance_bonus",
+   "stat": "rushing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 50,
+   "max": null,
+   "points": 15
+  },
+  {
+   "rule_id": "TD_REC_0_4",
+   "category": "td_distance_bonus",
+   "stat": "receiving_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 0,
+   "max": 4,
+   "points": 2
+  },
+  {
+   "rule_id": "TD_REC_5_10",
+   "category": "td_distance_bonus",
+   "stat": "receiving_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 5,
+   "max": 10,
+   "points": 3
+  },
+  {
+   "rule_id": "TD_REC_11_20",
+   "category": "td_distance_bonus",
+   "stat": "receiving_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 11,
+   "max": 20,
+   "points": 5
+  },
+  {
+   "rule_id": "TD_REC_21_35",
+   "category": "td_distance_bonus",
+   "stat": "receiving_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 21,
+   "max": 35,
+   "points": 7
+  },
+  {
+   "rule_id": "TD_REC_36_49",
+   "category": "td_distance_bonus",
+   "stat": "receiving_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 36,
+   "max": 49,
+   "points": 10
+  },
+  {
+   "rule_id": "TD_REC_50_PLUS",
+   "category": "td_distance_bonus",
+   "stat": "receiving_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 50,
+   "max": null,
+   "points": 13
+  },
+  {
+   "rule_id": "TD_PASS_0_4",
+   "category": "td_distance_bonus",
+   "stat": "passing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 0,
+   "max": 4,
+   "points": 2
+  },
+  {
+   "rule_id": "TD_PASS_5_10",
+   "category": "td_distance_bonus",
+   "stat": "passing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 5,
+   "max": 10,
+   "points": 3
+  },
+  {
+   "rule_id": "TD_PASS_11_20",
+   "category": "td_distance_bonus",
+   "stat": "passing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 11,
+   "max": 20,
+   "points": 4
+  },
+  {
+   "rule_id": "TD_PASS_21_35",
+   "category": "td_distance_bonus",
+   "stat": "passing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 21,
+   "max": 35,
+   "points": 6
+  },
+  {
+   "rule_id": "TD_PASS_36_49",
+   "category": "td_distance_bonus",
+   "stat": "passing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 36,
+   "max": 49,
+   "points": 9
+  },
+  {
+   "rule_id": "TD_PASS_50_PLUS",
+   "category": "td_distance_bonus",
+   "stat": "passing_td_distance",
+   "pos": "ALL",
+   "scope": "per_event",
+   "min": 50,
+   "max": null,
+   "points": 12
+  },
+  {
+   "rule_id": "FG_17_29",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 17,
+   "max": 29,
+   "points": 2
+  },
+  {
+   "rule_id": "FG_30_39",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 30,
+   "max": 39,
+   "points": 3
+  },
+  {
+   "rule_id": "FG_40_49",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 40,
+   "max": 49,
+   "points": 4
+  },
+  {
+   "rule_id": "FG_50_55",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 50,
+   "max": 55,
+   "points": 7
+  },
+  {
+   "rule_id": "FG_56_59",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 56,
+   "max": 59,
+   "points": 9
+  },
+  {
+   "rule_id": "FG_60",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 60,
+   "max": 60,
+   "points": 11
+  },
+  {
+   "rule_id": "FG_61",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 61,
+   "max": 61,
+   "points": 12
+  },
+  {
+   "rule_id": "FG_62",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 62,
+   "max": 62,
+   "points": 13
+  },
+  {
+   "rule_id": "FG_63",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 63,
+   "max": 63,
+   "points": 14
+  },
+  {
+   "rule_id": "FG_64",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 64,
+   "max": 64,
+   "points": 15
+  },
+  {
+   "rule_id": "FG_65",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 65,
+   "max": 65,
+   "points": 16
+  },
+  {
+   "rule_id": "FG_66_PLUS",
+   "category": "kicking_bonus",
+   "stat": "fg_made_distance",
+   "pos": "K",
+   "scope": "per_event",
+   "min": 66,
+   "max": null,
+   "points": 18
+  }
+ ],
+ "linear": [
+  {
+   "rule_id": "PASS_INT_ESC",
+   "category": "turnover_penalty",
+   "stat": "interceptions_thrown",
+   "pos": "QB",
+   "scope": "game_total",
+   "ppu": 0,
+   "unit": "interception",
+   "logic": "escalating_negative"
+  },
+  {
+   "rule_id": "TWO_POINT_CONV",
+   "category": "scoring_misc",
+   "stat": "two_point_conversions",
+   "pos": "ALL",
+   "scope": "per_event",
+   "ppu": 2,
+   "unit": "conversion",
+   "logic": "linear"
+  },
+  {
+   "rule_id": "TD_BONUS_QB",
+   "category": "td_count_bonus",
+   "stat": "total_touchdowns",
+   "pos": "QB",
+   "scope": "game_total",
+   "ppu": 5,
+   "unit": "4_tds",
+   "logic": "repeatable_milestone"
+  },
+  {
+   "rule_id": "TD_BONUS_NON_QB",
+   "category": "td_count_bonus",
+   "stat": "total_touchdowns",
+   "pos": "NON_QB",
+   "scope": "game_total",
+   "ppu": 5,
+   "unit": "3_tds",
+   "logic": "repeatable_milestone"
+  },
+  {
+   "rule_id": "XP_MADE",
+   "category": "kicking_bonus",
+   "stat": "xp_made",
+   "pos": "K",
+   "scope": "per_event",
+   "ppu": 1,
+   "unit": "xp",
+   "logic": "linear"
+  },
+  {
+   "rule_id": "XP_MISSED",
+   "category": "kicking_penalty",
+   "stat": "xp_missed",
+   "pos": "K",
+   "scope": "per_event",
+   "ppu": -1,
+   "unit": "xp",
+   "logic": "linear"
+  },
+  {
+   "rule_id": "FG_MISSED_UNDER_37",
+   "category": "kicking_penalty",
+   "stat": "fg_missed_distance_under_37",
+   "pos": "K",
+   "scope": "per_event",
+   "ppu": -1,
+   "unit": "fg_attempt",
+   "logic": "conditional_linear"
+  },
+  {
+   "rule_id": "DST_SACK",
+   "category": "defense_bonus",
+   "stat": "sacks",
+   "pos": "DST",
+   "scope": "per_event",
+   "ppu": 3,
+   "unit": "sack",
+   "logic": "linear"
+  },
+  {
+   "rule_id": "DST_HALF_SACK",
+   "category": "defense_bonus",
+   "stat": "half_sacks",
+   "pos": "DST",
+   "scope": "per_event",
+   "ppu": 2,
+   "unit": "half_sack",
+   "logic": "linear"
+  },
+  {
+   "rule_id": "DST_INT",
+   "category": "defense_bonus",
+   "stat": "defensive_interceptions",
+   "pos": "DST",
+   "scope": "per_event",
+   "ppu": 5,
+   "unit": "interception",
+   "logic": "linear"
+  },
+  {
+   "rule_id": "DST_SPECIAL_TEAMS_TD",
+   "category": "defense_bonus",
+   "stat": "special_teams_touchdowns",
+   "pos": "DST",
+   "scope": "per_event",
+   "ppu": 15,
+   "unit": "td",
+   "logic": "linear"
+  },
+  {
+   "rule_id": "TEAM_WIN",
+   "category": "team_bonus",
+   "stat": "team_win",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 3,
+   "unit": "win",
+   "logic": "boolean_bonus"
+  },
+  {
+   "rule_id": "TEAM_MARGIN_4_7",
+   "category": "team_bonus",
+   "stat": "margin_of_victory",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 1,
+   "unit": "margin_band",
+   "logic": "band_match"
+  },
+  {
+   "rule_id": "TEAM_MARGIN_8_10",
+   "category": "team_bonus",
+   "stat": "margin_of_victory",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 2,
+   "unit": "margin_band",
+   "logic": "band_match"
+  },
+  {
+   "rule_id": "TEAM_MARGIN_11_14",
+   "category": "team_bonus",
+   "stat": "margin_of_victory",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 4,
+   "unit": "margin_band",
+   "logic": "band_match"
+  },
+  {
+   "rule_id": "TEAM_MARGIN_15_21",
+   "category": "team_bonus",
+   "stat": "margin_of_victory",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 6,
+   "unit": "margin_band",
+   "logic": "band_match"
+  },
+  {
+   "rule_id": "TEAM_MARGIN_22_28",
+   "category": "team_bonus",
+   "stat": "margin_of_victory",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 8,
+   "unit": "margin_band",
+   "logic": "band_match"
+  },
+  {
+   "rule_id": "TEAM_MARGIN_29_PLUS",
+   "category": "team_bonus",
+   "stat": "margin_of_victory",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 10,
+   "unit": "margin_band",
+   "logic": "band_match"
+  },
+  {
+   "rule_id": "TEAM_SHUTOUT",
+   "category": "team_bonus",
+   "stat": "opponent_points_allowed",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 5,
+   "unit": "shutout",
+   "logic": "boolean_bonus"
+  },
+  {
+   "rule_id": "TEAM_50_BURGER",
+   "category": "team_bonus",
+   "stat": "team_points_scored_in_win",
+   "pos": "DST",
+   "scope": "game_total",
+   "ppu": 5,
+   "unit": "50_points",
+   "logic": "conditional_bonus"
+  },
+  {
+   "rule_id": "PICK_SIX_REC_BONUS",
+   "category": "return_td_mapping",
+   "stat": "interception_return_td_distance",
+   "pos": "DST",
+   "scope": "per_event",
+   "ppu": 0,
+   "unit": "td",
+   "logic": "mapped_to_receiving_td_distance_bonus"
+  },
+  {
+   "rule_id": "FUMBLE_RETURN_RUSH_BONUS",
+   "category": "return_td_mapping",
+   "stat": "fumble_return_td_distance",
+   "pos": "DST",
+   "scope": "per_event",
+   "ppu": 0,
+   "unit": "td",
+   "logic": "mapped_to_rushing_td_distance_bonus"
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+# Builds the site and publishes it to GitHub Pages.
+#
+# Official weeks (nflverse) are rebuilt here on a schedule; nflverse usually posts Tuesday morning
+# after MNF, so this runs Tue/Wed a few times. Live in-game scores need no server: each viewer's
+# browser scores the current week from ESPN (src/web/liveEngine.ts). Doublers and transactions
+# entered in the sheet are picked up live too, so no rebuild is needed for those.
+#
+# Setup (once): Settings → Pages → Source: "GitHub Actions". Then Actions → "Build and deploy" →
+# Run workflow. Needs no secrets — the sheet and nflverse are read through public URLs.
+
+name: Build and deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '0 13 * * 2'   # Tue  9:00 ET
+    - cron: '0 17 * * 2'   # Tue 13:00 ET
+    - cron: '0 22 * * 2'   # Tue 18:00 ET
+    - cron: '0 13 * * 3'   # Wed  9:00 ET (late stat corrections)
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run fetch
+      - run: npm test
+      # Parity mismatches don't block the deploy (the sheet is still the system of record);
+      # the report is published on the site's Parity page and in the job log.
+      - run: npm run parity -- --all || echo "::warning::Parity mismatches — see the Parity page"
+      - run: npm run build:web
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

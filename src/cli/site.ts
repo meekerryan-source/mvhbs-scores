@@ -61,7 +61,7 @@ buildSync({ entryPoints: ['src/web/liveEngine.ts'], bundle: true, format: 'esm',
 copyFileSync('src/web/style.css', 'dist/style.css');
 copyFileSync('src/web/manifest.webmanifest', 'dist/manifest.webmanifest');
 mkdirSync('dist/icons', { recursive: true });
-for (const f of ['icon-192.png', 'icon-512.png', 'apple-touch-icon.png']) copyFileSync(`src/web/icons/${f}`, `dist/icons/${f}`);
+for (const f of ['icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'og.jpg']) copyFileSync(`src/web/icons/${f}`, `dist/icons/${f}`);
 // Cache-busting: browsers (and GitHub Pages' 10-minute cache) keep old copies of app.js etc., so
 // every asset URL carries a hash of its contents — a changed file gets a new URL phones must fetch.
 const v = (f: string) => createHash('sha256').update(readFileSync(f)).digest('hex').slice(0, 10);

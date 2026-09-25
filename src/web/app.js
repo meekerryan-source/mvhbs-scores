@@ -29,6 +29,12 @@ function indexIr() {
 }
 /** Official Injured Reserve record for a rostered player (never D/ST), matched by name + NFL team, then name. */
 const irFor = e => (e.bucket === 'DST' ? null : IR.get(`${normName(e.player)}|${e.nfl}`) ?? IR.get(`${normName(e.player)}|`) ?? null);
+/** "Justin Herbert" → "J. Herbert"; D/ST "Los Angeles Rams" → "Rams" (compact grid at laptop widths). */
+const shortName = (name, bucket) => {
+  const parts = String(name).trim().split(/\s+/);
+  if (bucket === 'DST') return parts[parts.length - 1];
+  return parts.length > 1 ? `${parts[0][0]}. ${parts.slice(1).join(' ')}` : name;
+};
 const irDate = d => (d ? new Date(d + 'T12:00:00Z').toLocaleDateString([], { month: 'short', day: 'numeric' }) : '');
 
 const LIVE = { week: null, error: '', timer: 0, busy: false, checked: false };
@@ -177,6 +183,18 @@ function computeStandings() {
   return rows;
 }
 
+/** League-friendly one-liner for a week's state (the engine's statusNote is for the scorer). */
+function statusText(w) {
+  if (w.status === 'final') return 'Final — official stats.';
+  if (w.status === 'live' && w.live) {
+    const g = w.live.games, done = g.filter(x => x.state === 'post').length, on = g.filter(x => x.state === 'in').length;
+    const at = new Date(w.live.fetchedAt).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+    return `Live · ${done} of ${g.length} games final${on ? ` · ${on} in progress` : ''} · updated ${at}. Official after Tuesday.`;
+  }
+  if (w.status === 'provisional') return 'Some games are still to be played — scores are provisional.';
+  return LIVE.checked ? `Week ${w.week} hasn't started yet.` : 'Loading live scores…';
+}
+
 function weekPicker(current, base) {
   return `<div class="weekpick">${DATA.weeks.map(w => `<a href="#${base}/${w.week}" aria-current="${w.week === current}">W${w.week}</a>`).join('')}</div>`;
 }
@@ -190,10 +208,9 @@ function renderWeek(n) {
   // Lineup colours only mean something once every game is over (live: all ESPN games final).
   const final = w.status === 'final' || (w.status === 'live' && w.live?.allFinal);
   let h = `<div class="bar"><h1>Week ${w.week}</h1>${badge(w.status)}${weekPicker(w.week, 'week')}</div>`;
-  h += `<div class="bar"><span class="muted">${esc(w.statusNote)}${w.live ? ` · ESPN fetched ${new Date(w.live.fetchedAt).toLocaleTimeString()}` : ''}</span></div>`;
+  h += `<div class="bar"><span class="muted">${esc(statusText(w))}</span></div>`;
   if (w.live) h += renderGames(w.live.games);
-  if (w.status === 'unsettled' && !LIVE.checked) h += `<p class="muted note">Loading live scores…</p>`;
-  else if (w.status === 'unsettled') h += `<div class="warnbox">nflverse has no official stats for Week ${w.week} yet, so nothing is scored. The sheet's live grid stays the reference until the Tuesday nflverse refresh.</div>`;
+
   const floors = w.audit.filter(a => a.type.startsWith('pbp_'));
   if (floors.length) h += `<div class="badbox"><b>${floors.length} TD${floors.length > 1 ? 's' : ''} floored to +2</b> — play-by-play distances missing. <a href="#audit">See Audit</a>.</div>`;
   h += `<div class="bar legend">${final ? '<span class="lg-starter">Counted</span><span class="lg-bonus">Bonus slot</span><span class="lg-sixth">6th man</span>' : '<span class="muted">Lineup colours appear once the week is final.</span>'}<span class="lg-doubler">★ Doubler ×2</span>${IR.size ? '<span class="lg-ir">Injured Reserve</span>' : ''}<span class="muted">Click any player for the scoring audit.</span></div>`;
@@ -216,7 +233,7 @@ function renderWeek(n) {
         const cls = [final && e.slot === 'starter' ? (e.sixthMan ? 'sixth' : 'starter') : '', final && e.slot === 'bonus' ? 'bonus' : '', !e.active ? 'inactive' : '', ir ? 'on-ir' : ''].filter(Boolean).join(' ');
         const dcls = e.doubled ? `doubled${ir ? ' on-ir' : ''}` : cls;
         const title = `${e.player} · ${e.pos} ${e.nfl} · ${e.counted}${e.doubled ? ' · doubler' : ''}${ir ? ' · INJURED RESERVE' : ''}${e.active ? '' : ' · no stats this week'}`;
-        h += `<td class="cell name ${dcls}" data-id="${id}" title="${esc(title)}">${e.doubled ? '★ ' : ''}${esc(e.player)}</td>`;
+        h += `<td class="cell name ${dcls}" data-id="${id}" title="${esc(title)}">${e.doubled ? '★ ' : ''}<span class="nm-full">${esc(e.player)}</span><span class="nm-short">${esc(shortName(e.player, e.bucket))}</span></td>`;
         h += `<td class="cell pts ${dcls}" data-id="${id}">${e.doubled ? `<span class="x2">${fmt(e.raw)}×2=</span>${fmt(e.pts)}` : fmt(e.pts)}</td>`;
       }
       h += `</tr>`;

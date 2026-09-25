@@ -67,7 +67,7 @@ nav a { color: var(--head-ink); text-decoration: none; padding: 6px 10px; border
 nav a:hover { opacity: 1; background: rgba(255,255,255,.08); }
 nav a[aria-current="page"] { opacity: 1; background: rgba(255,255,255,.16); font-weight: 600; }
 
-main { padding: 16px; max-width: 1500px; margin: 0 auto; outline: none; }
+main { padding: 16px; max-width: 1800px; margin: 0 auto; outline: none; }
 .bar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 .weekpick { display: flex; gap: 4px; flex-wrap: wrap; }
 .weekpick a {
@@ -95,7 +95,7 @@ table.grid th.slot, table.grid td.slot { position: sticky; left: 0; background: 
 table.grid thead th.slot { background: var(--head); color: var(--head-ink); z-index: 2; }
 table.grid td { border-bottom: 1px solid var(--line); }
 table.grid td.pts { text-align: right; border-right: 2px solid var(--line-strong); min-width: 44px; }
-table.grid td.name { max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+table.grid td.name { max-width: 140px; overflow: hidden; text-overflow: ellipsis; }
 table.grid tr.group-end td { border-bottom: 2px solid var(--line-strong); }
 table.grid td.cell { cursor: pointer; }
 table.grid td.cell:hover { outline: 2px solid var(--accent); outline-offset: -2px; }
@@ -213,14 +213,44 @@ td.doubled.name.on-ir { color: #b00020; }
 /* Home Screen app on iPhone: keep the header clear of the status bar / notch */
 .top { padding-top: max(10px, env(safe-area-inset-top)); }
 
-/* League banner: a wide painting with open dark space on the left for the title */
+/* League banner: the whole painting, anchored right and never cropped; its dark left side blends
+   into a matching backdrop that holds the title. Short strip so the scores stay near the top. */
 .banner {
   position: relative; overflow: hidden;
-  aspect-ratio: 2000 / 857; max-height: 360px; width: 100%;
-  background: #1a120b url("icons/banner.jpg") right 30% / cover no-repeat;
+  height: clamp(140px, 17vw, 240px);
+  background:
+    url("icons/banner.jpg") right center / auto 100% no-repeat,
+    radial-gradient(120% 140% at 70% 40%, #3a2716 0%, #1b120a 55%, #0e0906 100%);
 }
-.banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, rgba(10,8,5,.55), rgba(10,8,5,0) 45%); }
-.banner-text { position: absolute; left: 16px; bottom: 12px; z-index: 1; display: grid; gap: 2px; color: #f3e6c8; max-width: 42%; }
-.banner-title { font-family: Georgia, "Times New Roman", serif; font-size: clamp(15px, 4.2vw, 34px); font-weight: 700; line-height: 1.1; text-shadow: 0 1px 3px rgba(0,0,0,.8); text-wrap: balance; }
-.banner-sub { font-size: clamp(11px, 2.4vw, 14px); opacity: .85; text-shadow: 0 1px 2px rgba(0,0,0,.8); }
-@media (min-width: 720px) { .banner-text { left: 24px; bottom: 20px; } }
+.banner-text { position: absolute; left: 16px; bottom: 12px; z-index: 1; display: grid; gap: 2px; color: #f3e6c8; max-width: min(46%, 520px); }
+.banner-title { font-family: Georgia, "Times New Roman", serif; font-size: clamp(16px, 3.4vw, 34px); font-weight: 700; line-height: 1.1; text-shadow: 0 1px 3px rgba(0,0,0,.85); text-wrap: balance; }
+.banner-sub { font-size: clamp(11px, 1.6vw, 14px); opacity: .85; text-shadow: 0 1px 2px rgba(0,0,0,.8); }
+@media (min-width: 720px) { .banner-text { left: 24px; bottom: 18px; } }
+/* Phones: the painting is wider than the strip, so fade its left edge under the title */
+@media (max-width: 719px) { .banner::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to right, rgba(14,9,6,.7), rgba(14,9,6,0) 55%); } }
+
+/* Compact league grid below 1760px (full names need ~1700px for 8 teams): short names so all eight teams fit without sideways scrolling */
+.nm-short { display: none; }
+@media (max-width: 1759px) {
+  table.grid { font-size: 12px; }
+  table.grid th, table.grid td { padding: 3px 3px; }
+  table.grid td.name { max-width: 72px; }
+  table.grid td.pts { min-width: 24px; }
+  table.grid th.slot, table.grid td.slot { padding: 3px 2px; }
+  table.grid th.slot, table.grid td.slot { font-size: 10px; }
+  .nm-full { display: none; }
+  .nm-short { display: inline; }
+  .pts .x2 { display: none; }
+}
+/* Phones: two game cards per row */
+@media (max-width: 719px) {
+  .games { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+  .game { padding: 5px 8px; font-size: 12px; }
+  .game .gd { font-size: 10.5px; }
+}
+@media (min-width: 1280px) and (max-width: 1759px) {
+  table.grid { font-size: 13px; }
+  table.grid th, table.grid td { padding: 4px 5px; }
+  table.grid td.name { max-width: 110px; }
+  table.grid td.pts { min-width: 30px; }
+}

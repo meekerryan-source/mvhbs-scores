@@ -40,6 +40,7 @@ async function load() {
   DATA.standings = computeStandings();
   indexIr();
   $('#season').textContent = DATA.season;
+  $('#banner-sub').textContent = `${DATA.season} season`;
   updateStamp();
 }
 

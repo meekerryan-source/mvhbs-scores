@@ -1,6 +1,7 @@
 // Site builder: computes every week that has a Week_N tab, nflverse stats or live ESPN data and writes
 // the read-only site to dist/ (index.html + app.js + engine.js + style.css + data.json). No secrets in the output.
 
+import { createHash } from 'node:crypto';
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import type { EngineInput } from '../engine/season.js';
 import type { SheetConfig } from '../data/load.js';
@@ -39,8 +40,16 @@ const data = {
 
 mkdirSync('dist', { recursive: true });
 writeFileSync('dist/data.json', JSON.stringify(data));
-for (const f of ['index.html', 'app.js', 'style.css']) copyFileSync(`src/web/${f}`, `dist/${f}`);
 // The scoring engine, bundled for the browser so the page can score live games without a server.
 buildSync({ entryPoints: ['src/web/liveEngine.ts'], bundle: true, format: 'esm', platform: 'browser', target: 'es2020', minify: true, outfile: 'dist/engine.js', logLevel: 'warning' });
+copyFileSync('src/web/style.css', 'dist/style.css');
+// Cache-busting: browsers (and GitHub Pages' 10-minute cache) keep old copies of app.js etc., so
+// every asset URL carries a hash of its contents — a changed file gets a new URL phones must fetch.
+const v = (f: string) => createHash('sha256').update(readFileSync(f)).digest('hex').slice(0, 10);
+const engineV = v('dist/engine.js');
+writeFileSync('dist/app.js', readFileSync('src/web/app.js', 'utf8').replace("from './engine.js'", `from './engine.js?v=${engineV}'`));
+writeFileSync('dist/index.html', readFileSync('src/web/index.html', 'utf8')
+  .replace('href="style.css"', `href="style.css?v=${v('dist/style.css')}"`)
+  .replace('src="app.js"', `src="app.js?v=${v('dist/app.js')}"`));
 return `dist/ built: weeks ${weeks.join(', ')} (${season.weeks.map(w => `W${w.week} ${w.status}`).join(', ')}); parity reports for ${Object.keys(parity).map(w => 'W' + w).join(', ') || 'none — run npm run parity first'}`;
 }

@@ -145,9 +145,14 @@ function myTeam() {
   return DATA.teams.includes(t) ? t : null;
 }
 
+/**
+ * The week to open on: the current NFL week once it has any scores (live, or partly settled by
+ * nflverse), otherwise the latest final week. Before Sunday of an unplayed week that's last week.
+ */
 function latestWeek() {
-  const live = DATA.weeks.find(w => w.status === 'live');
-  if (live) return live.week;
+  const current = [...DATA.weeks].reverse().find(w => w.status === 'live' || w.status === 'provisional');
+  if (current) return current.week;
+  if (LIVE.week && DATA.weeks.some(w => w.week === LIVE.week) && LIVE.checked) return LIVE.week;
   const final = DATA.weeks.filter(w => w.status === 'final');
   return (final.length ? final[final.length - 1] : DATA.weeks[0]).week;
 }

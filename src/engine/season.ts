@@ -1,7 +1,8 @@
 import type {
-  AuditEntry, DisplayTeam, DoublerRow, DstScore, GameResult, PlayerScore, PlayerWeekStats, RosterEntry, Rules, TdRow, TransactionRow,
+  AdjustmentRow, AuditEntry, DisplayTeam, DoublerRow, DstScore, GameResult, PlayerScore, PlayerWeekStats, RosterEntry, Rules, TdRow, TransactionRow,
 } from './types.js';
 import { indexTdRows } from './pbp.js';
+import { applyAdjustments } from './adjust.js';
 import { scorePlayerGame } from './scorePlayer.js';
 import { indexGames, scoreAllDst } from './scoreDst.js';
 import { pairTransactions, resolveRosterForWeek, validateTransactions } from './roster.js';
@@ -27,6 +28,8 @@ export interface EngineInput {
   roster: RosterEntry[];
   transactions: TransactionRow[];
   doublers: DoublerRow[];
+  /** Manual corrections from the sheet's Adjustments tab. */
+  adjustments?: AdjustmentRow[];
   stats: PlayerWeekStats[];
   tds: TdRow[];
   games: GameResult[];
@@ -123,6 +126,7 @@ export function runSeason(input: EngineInput, weeks: number[]): SeasonResult {
       : input.stats.filter(s => s.season === input.season && s.week === week && s.season_type === input.seasonType);
     const players = stats.map(s => scorePlayerGame(s, input.rules, pbp, audit));
     const dst = scoreAllDst(stats, games, audit);
+    applyAdjustments(input.season, week, input.adjustments ?? [], players, dst, audit);
     const roster = resolveRosterForWeek(input.roster, txs, week, audit);
     const lineups = buildLineups(input.season, week, roster, players, dst, doublers, audit);
     const weekTotals = {} as Record<DisplayTeam, number>;

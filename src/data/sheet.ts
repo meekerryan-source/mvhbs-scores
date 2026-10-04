@@ -12,7 +12,7 @@ import { join } from 'node:path';
 export const SHEET_ID = '1NRft1rdJwKsWohhKRBlXZ1ew8tUq82a-emxTy04yRzo';
 export const SHEET_CACHE = '.cache/sheet';
 
-export const VISIBLE_TABS = ['Week_1', 'Week_2', 'Week_3', 'Standings', 'Points Log', 'Rosters', 'Doublers', 'Transactions'];
+export const VISIBLE_TABS = ['Week_1', 'Week_2', 'Week_3', 'Standings', 'Points Log', 'Rosters', 'Doublers', 'Transactions', 'Adjustments'];
 export const HIDDEN_TABS = ['Rules_Thresholds', 'Rules_Linear', 'Scored_Player_Game', 'Scored_DST_Game', 'Team_Games', 'PBP_TDs', 'Audit'];
 
 export function cachePath(tab: string): string {

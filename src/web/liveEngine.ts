@@ -2,7 +2,7 @@
 // own — straight from ESPN (CORS-open) plus the sheet's latest Doublers / Transactions / Rosters —
 // using the same engine code as the official build. No server needed; nflverse stays official.
 
-import type { DoublerRow, RosterEntry, Rules, TransactionRow } from '../engine/types.js';
+import type { AdjustmentRow, DoublerRow, RosterEntry, Rules, TransactionRow } from '../engine/types.js';
 import { liveGameResults, parseEspnSummary, parseScoreboard, rosterIndex, type EspnGame, type LiveParse } from '../engine/espn.js';
 import { runSeason, type EngineInput } from '../engine/season.js';
 import { normTeam } from '../engine/normalize.js';
@@ -17,6 +17,7 @@ export interface LiveBase {
   roster: RosterEntry[];
   transactions: TransactionRow[];
   doublers: DoublerRow[];
+  adjustments?: AdjustmentRow[];
   latestTeam?: Record<string, string>;
 }
 
@@ -50,21 +51,25 @@ async function getJson(url: string): Promise<any> {
 }
 
 /** Latest Doublers / Transactions / Rosters from the (link-viewable) sheet; falls back to the built copy per tab. */
-async function freshSheet(base: LiveBase, notes: string[]): Promise<Pick<LiveBase, 'roster' | 'transactions' | 'doublers'>> {
+async function freshSheet(base: LiveBase, notes: string[]): Promise<Pick<LiveBase, 'roster' | 'transactions' | 'doublers' | 'adjustments'>> {
   const tab = async (name: string) => {
     const url = `https://docs.google.com/spreadsheets/d/${base.sheetId}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`;
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return parseCsv(await res.text());
   };
-  const [d, t, r] = await Promise.allSettled([tab('Doublers'), tab('Transactions'), tab('Rosters')]);
-  const out = { roster: base.roster, transactions: base.transactions, doublers: base.doublers };
+  const [d, t, r, a] = await Promise.allSettled([tab('Doublers'), tab('Transactions'), tab('Rosters'), tab('Adjustments')]);
+  const out = { roster: base.roster, transactions: base.transactions, doublers: base.doublers, adjustments: base.adjustments ?? [] };
   if (d.status === 'fulfilled') out.doublers = d.value.filter(x => x.fantasy_team && x.player).map(x => ({ season: Number(x.season) || 0, week: Number(x.week) || 0, fantasy_team: x.fantasy_team.trim(), player: x.player.trim() }));
   else notes.push('Doublers tab unreachable — using the copy from the last build');
   if (t.status === 'fulfilled') out.transactions = t.value.map(x => ({ Week: Number(x.Week) || 0, Team: x.Team, Kind: x.Kind, Action: x.Action, Player: x.Player, Position: x.Position }));
   else notes.push('Transactions tab unreachable — using the copy from the last build');
   if (r.status === 'fulfilled' && r.value.filter(x => x.player).length >= 200) {
     out.roster = r.value.filter(x => x.player).map(x => ({ round: Number(x.round) || '', pick: Number(x.pick) || '', fantasy_team: x.fantasy_team.trim(), player: x.player.trim(), nfl_team: normTeam(x.nfl_team), position: x.position.trim() }));
+  }
+  // gviz returns the FIRST tab when a name doesn't exist, so only trust it if it has the Adjustments header.
+  if (a.status === 'fulfilled' && a.value.length && 'points' in a.value[0] && 'reason' in a.value[0]) {
+    out.adjustments = a.value.filter(x => x.player && Number(x.points)).map(x => ({ season: Number(x.season) || 0, week: Number(x.week) || 0, player: x.player.trim(), points: Number(x.points), reason: (x.reason ?? '').trim() }));
   }
   return out;
 }

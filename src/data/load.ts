@@ -1,4 +1,4 @@
-import type { DoublerRow, RosterEntry, Rules, TransactionRow } from '../engine/types.js';
+import type { AdjustmentRow, DoublerRow, RosterEntry, Rules, TransactionRow } from '../engine/types.js';
 import type { EngineInput } from '../engine/season.js';
 import { normTeam } from '../engine/normalize.js';
 import { parseLinearRules, parseThresholdRules, RULES_SNAPSHOT } from '../engine/rules.js';
@@ -37,6 +37,18 @@ export function loadTransactions(): TransactionRow[] {
   }));
 }
 
+/** The sheet's Adjustments tab (season, week, player, points, reason); empty if the tab isn't there. */
+export function loadAdjustments(): AdjustmentRow[] {
+  if (!hasCachedTab('Adjustments')) return [];
+  return parseAdjustments(parseCsvRecords(readCachedTab('Adjustments')));
+}
+
+export function parseAdjustments(records: Record<string, string>[]): AdjustmentRow[] {
+  return records
+    .filter(r => r.player && Number(r.points))
+    .map(r => ({ season: Number(r.season) || 0, week: Number(r.week) || 0, player: r.player.trim(), points: Number(r.points), reason: (r.reason ?? '').trim() }));
+}
+
 export function loadDoublers(): DoublerRow[] {
   return parseCsvRecords(readCachedTab('Doublers'))
     .filter(r => r.fantasy_team && r.player)
@@ -64,6 +76,7 @@ export async function loadEngineInput(season?: number): Promise<{ input: EngineI
     roster: loadRoster(),
     transactions: loadTransactions(),
     doublers: loadDoublers(),
+    adjustments: loadAdjustments(),
     stats: loadStats(s),
     tds: await loadTdRows(s),
     games: schedule.filter(g => g.played).map(g => g.game),

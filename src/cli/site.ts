@@ -51,7 +51,7 @@ const data = {
   rules: input.rules,
   parity,
   // What the page needs to score a live week itself (see src/web/liveEngine.ts). Public league data only.
-  base: { season: input.season, sheetId: SHEET_ID, rules: input.rules, roster: input.roster, transactions: input.transactions, doublers: input.doublers, latestTeam },
+  base: { season: input.season, sheetId: SHEET_ID, rules: input.rules, roster: input.roster, transactions: input.transactions, doublers: input.doublers, adjustments: input.adjustments ?? [], latestTeam },
 };
 
 mkdirSync('dist', { recursive: true });

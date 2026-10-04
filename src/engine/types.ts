@@ -113,11 +113,12 @@ export type Component =
   | 'two_pt'
   | 'kicking'
   | 'idp'
-  | 'st_td';
+  | 'st_td'
+  | 'adjustment';
 
 export const COMPONENTS: Component[] = [
   'yardage', 'passing', 'receptions', 'td_distance', 'td_milestone',
-  'int_penalty', 'two_pt', 'kicking', 'idp', 'st_td',
+  'int_penalty', 'two_pt', 'kicking', 'idp', 'st_td', 'adjustment',
 ];
 
 /** One scoring line — the unit of the audit trail (Points Log row). */
@@ -193,6 +194,15 @@ export interface Transaction {
   player_in: string;
   nfl_team_in: string;
   position_in: string;
+}
+
+/** Manual scoring correction from the sheet's Adjustments tab (e.g. a mis-tagged PBP touchdown). */
+export interface AdjustmentRow {
+  season: number;
+  week: number;
+  player: string; // player name as in the stats, or a D/ST team name ("Los Angeles Rams")
+  points: number;
+  reason: string;
 }
 
 export interface DoublerRow {

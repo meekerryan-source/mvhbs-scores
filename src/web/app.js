@@ -390,16 +390,22 @@ function openPlayer(id) {
 // Standings
 // ---------------------------------------------------------------------------------------------
 function renderStandings() {
-  const weeks = DATA.weeks;
-  const top = weeks.map((w, i) => Math.max(...DATA.standings.map(s => s.weeks[i])));
+  // Newest week first, so the live / latest week sits right next to Total and W1 is far right.
+  const order = DATA.weeks.map((w, i) => ({ w, i })).reverse();
+  const top = DATA.weeks.map((w, i) => Math.max(...DATA.standings.map(s => s.weeks[i])));
   let h = `<div class="bar"><h1>Standings — ${DATA.season}</h1></div>`;
-  h += `<p class="muted">Total-points league: rank = season total. Avg / Last / Best use final weeks only. Bold = top score that week.</p>`;
-  h += `<div class="card scroll"><table class="list"><thead><tr><th>#</th><th>Team</th><th class="num">Total</th><th class="num">Avg / wk</th><th class="num">Behind 1st</th><th class="num">Last wk</th><th class="num">Best wk</th>`;
-  h += weeks.map(w => `<th class="num">W${w.week}${w.status !== 'final' ? ` <span class="pill">${STATUS_LABEL[w.status]}</span>` : ''}</th>`).join('');
+  h += `<p class="muted">Rank = season total. Newest week first. Bold = top score that week. Avg / best use final weeks only.</p>`;
+  h += `<div class="card scroll"><table class="list standings"><thead><tr><th>#</th><th>Team</th><th class="num">Total</th>`;
+  h += order.map(({ w }) => `<th class="num">W${w.week}${w.status !== 'final' ? ` <span class="pill">${STATUS_LABEL[w.status]}</span>` : ''}</th>`).join('');
   h += `</tr></thead><tbody>`;
   DATA.standings.forEach((s, i) => {
-    h += `<tr class="${i === 0 ? 'lead' : ''}"><td>${s.rank}</td><td><b>${esc(s.team)}</b></td><td class="num big">${fmt(s.total)}</td><td class="num">${s.avg.toFixed(1)}</td><td class="num">${s.behind == null ? '—' : fmt(s.behind)}</td><td class="num">${fmt(s.last)}</td><td class="num">${fmt(s.best)}</td>`;
-    h += s.weeks.map((v, k) => `<td class="num">${v === top[k] && v > 0 ? `<b>${fmt(v)}</b>` : fmt(v)}</td>`).join('');
+    h += `<tr class="${i === 0 ? 'lead' : ''}"><td>${s.rank}</td>`;
+    h += `<td><b>${esc(s.team)}</b><span class="sub-line">avg ${s.avg.toFixed(1)} · best ${fmt(s.best)}</span></td>`;
+    h += `<td class="num"><span class="big">${fmt(s.total)}</span><span class="sub-line">${s.behind == null ? 'leader' : `${fmt(s.behind)} back`}</span></td>`;
+    h += order.map(({ w, i: k }) => {
+      const v = s.weeks[k];
+      return `<td class="num${w.status !== 'final' ? ' wk-current' : ''}">${v === top[k] && v > 0 ? `<b>${fmt(v)}</b>` : fmt(v)}</td>`;
+    }).join('');
     h += `</tr>`;
   });
   h += `</tbody></table></div>`;
